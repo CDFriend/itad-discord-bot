@@ -1,0 +1,6 @@
+# Cache files
+*.pyc
+.pytest_cache
+
+# IDE files
+.idea
