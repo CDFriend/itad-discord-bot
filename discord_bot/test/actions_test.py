@@ -1,13 +1,14 @@
 import pytest
 from unittest import mock
 import discord_bot.actions as actions
+from discord_bot.messages import Messenger
 
 
 @pytest.fixture
 def mocked_actions():
     action_dict = {
-        "funcA": mock.MagicMock(),
-        "funcB": mock.MagicMock()
+        "funcA": mock.AsyncMock(),
+        "funcB": mock.AsyncMock()
     }
 
     # Replace the commands map with our map of mocks
@@ -17,8 +18,8 @@ def mocked_actions():
 
 @pytest.fixture
 def mock_messenger():
-    with mock.patch("discord_bot.messages.Messenger") as MockMessenger:
-        yield MockMessenger()
+    messenger = mock.AsyncMock()
+    yield messenger
 
 
 @pytest.mark.asyncio
@@ -49,3 +50,6 @@ async def test_handle_cmd_gives_unrecognized_cmd(mocked_actions, mock_messenger,
     # None of the actions should be called
     for name, action in mocked_actions.items():
         action.assert_not_called()
+
+    # Should send unrecognized command message
+    mock_messenger.send_unknown_command.assert_called_once()

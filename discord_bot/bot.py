@@ -15,10 +15,6 @@ handler = logging.StreamHandler(sys.stdout)
 root.addHandler(handler)
 
 
-def get_client() -> discord.Client:
-    """Gets the Discord client singleton."""
-    return client
-
 @client.event
 async def on_ready():
     logging.info(f"Logged in as {client.user}")
