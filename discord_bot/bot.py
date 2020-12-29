@@ -13,6 +13,11 @@ handler = logging.StreamHandler(sys.stdout)
 root.addHandler(handler)
 
 
+def get_client() -> discord.Client:
+    """Gets the Discord client singleton."""
+    return client
+
+
 def is_mentioned(message) -> bool:
     """Returns true if our user is mentioned in a message. Excludes the @everyone role."""
     if client.user.id in message.raw_mentions:
