@@ -67,8 +67,8 @@ async def test_track_game_finds_lowest_price(mock_messenger, mock_game_prices):
     mock_game_prices.get_id_from_game_title.return_value = "gameid"
     mock_game_prices.get_prices_for_games.return_value = {
         "gameid": [
-            GamePrice(price_new=12.04),
-            GamePrice(price_new=2.24),
+            GamePrice(price_new=12.0464),
+            GamePrice(price_new=2.2455),
             GamePrice(price_new=5.00)
         ]
     }
@@ -76,7 +76,7 @@ async def test_track_game_finds_lowest_price(mock_messenger, mock_game_prices):
     await actions.cmds_map["track"]("test game", mock_messenger)
 
     # Should notify user that the best price for the game is 2.24
-    mock_messenger.send_price_found.assert_called_once_with("test game", 2.24)
+    mock_messenger.send_price_found.assert_called_once_with("test game", 2.25)
 
 
 @pytest.mark.asyncio

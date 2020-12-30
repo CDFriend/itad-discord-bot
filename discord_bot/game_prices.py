@@ -10,10 +10,17 @@ api = ITADApi()
 
 class GamePrice:
     def __init__(self, **kwargs):
-        self.price_new: float = kwargs.get("price_new")
-        self.price_old: float = kwargs.get("price_old")
+        # ITAD sometimes gives us prices with more than 2 decimal places, so round em
+        self.price_new: float = self._round_price(kwargs.get("price_new"))
+        self.price_old: float = self._round_price(kwargs.get("price_old"))
         self.percent_off: int = kwargs.get("price_cut")
         self.url: str = kwargs.get("url")
+
+    @staticmethod
+    def _round_price(price: Optional[float]) -> Optional[float]:
+        if price:
+            return round(price, 2)
+        return None
 
 
 def get_id_from_game_title(title: str) -> Optional[str]:

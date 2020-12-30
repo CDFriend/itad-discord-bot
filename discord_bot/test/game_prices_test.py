@@ -50,8 +50,8 @@ def test_get_prices_single(game_prices):
             "elitedangerous": {
                 "list": [
                     {
-                        "price_new": 8.35023,
-                        "price_old": 38.5267,
+                        "price_new": 8.35,
+                        "price_old": 38.52,
                         "price_cut": 78,
                         "url": "https://www.gamebillet.com/elite-dangerous",
                         "shop": {
@@ -63,8 +63,8 @@ def test_get_prices_single(game_prices):
                         ]
                     },
                     {
-                        "price_new": 8.47267,
-                        "price_old": 38.6751,
+                        "price_new": 8.47,
+                        "price_old": 38.67,
                         "price_cut": 78,
                         "url": "https://www.indiegala.com/store/game/elite-dangerous/359320?ref=itad",
                         "shop": {
@@ -78,8 +78,8 @@ def test_get_prices_single(game_prices):
             "oxygennotincluded": {
                 "list": [
                     {
-                        "price_new": 8.60745,
-                        "price_old": 34.4816,
+                        "price_new": 8.60,
+                        "price_old": 34.48,
                         "price_cut": 75,
                         "url": "https://uk.gamesplanet.com/game/elite-dangerous-steam-key--4624-1?ref=itad",
                         "shop": {
