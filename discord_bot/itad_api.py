@@ -18,4 +18,4 @@ class ITADApi:
     def _send_request(self, route: str, payload: dict) -> requests.Response:
         """Sends a request to ITAD with the appropriate auth info."""
         payload["key"] = self._api_key
-        return requests.get(ITAD_API_URL + route)
+        return requests.get(ITAD_API_URL + route, payload)
