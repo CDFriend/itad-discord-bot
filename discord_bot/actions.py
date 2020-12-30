@@ -3,6 +3,7 @@ from typing import Dict
 from discord import Message, Client
 from discord_bot.discord_utils import find_mentions
 from discord_bot.messages import Messenger
+import discord_bot.game_prices as game_prices
 
 cmds_map: Dict[str, FunctionType] = {}
 
@@ -41,5 +42,32 @@ async def handle_command(cmd: str, messenger: Messenger):
         pass
 
 
+def bot_command(name: str):
+    def wrapper(fn):
+        cmds_map[name] = fn
+    return wrapper
+
+
+@bot_command("track")
 async def track_game(arg_str: str, messenger: Messenger):
-    pass
+    """Keeps track of the price of a game on IsThereAnyDeal. If we can find the game on
+    ITAD, send a price back to the user immediately.
+    """
+
+    # Try and find a game with the given title (arg string) on ITAD.
+    id = game_prices.get_id_from_game_title(arg_str)
+
+    if id:
+        # Find current price for game
+        prices = game_prices.get_prices_for_games([id])
+
+        if id in prices and len(prices[id]) > 0:
+            price_list = prices[id]
+
+            best_price = min(price_list, key=lambda price: price.price_new)
+            await messenger.send_price_found(arg_str, best_price.price_new)
+        else:
+            await messenger.send_no_price_found(arg_str)
+    else:
+        # Notify user we couldn't find game
+        await messenger.send_no_game_found(arg_str)
