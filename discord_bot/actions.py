@@ -3,9 +3,12 @@ from typing import Dict
 from discord import Message, Client
 from discord_bot.discord_utils import find_mentions
 from discord_bot.messages import Messenger
+from discord_bot.models import GameInfo, Session
 import discord_bot.game_prices as game_prices
 
 cmds_map: Dict[str, FunctionType] = {}
+
+db_session = Session()
 
 
 async def handle_message(message: Message, client: Client):
@@ -66,6 +69,13 @@ async def track_game(arg_str: str, messenger: Messenger):
 
             best_price = min(price_list, key=lambda price: price.price_new)
             await messenger.send_price_found(arg_str, best_price.price_new)
+
+            game_info = GameInfo()
+            game_info.name = arg_str
+            game_info.itad_plain = id
+
+            db_session.add(game_info)
+            db_session.commit()
         else:
             await messenger.send_no_price_found(arg_str)
     else:

@@ -18,7 +18,8 @@ class Messenger:
 
     async def send_price_found(self, title: str, price: float):
         await self._send_message(f"Nice, I found the game {title} on IsThereAnyDeal. "
-                                 f"The best price I found is ${price}")
+                                 f"The best price I found is ${price}\n\n"
+                                 "I'll start tracking this game.")
 
     async def _send_message(self, msg: str):
         await self._channel.send(msg)
