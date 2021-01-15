@@ -8,8 +8,6 @@ import discord_bot.game_prices as game_prices
 
 cmds_map: Dict[str, FunctionType] = {}
 
-db_session = Session()
-
 
 async def handle_message(message: Message, client: Client):
     """Command structure: <command> <arg str>"""
@@ -67,8 +65,8 @@ async def track_game(arg_str: str, messenger: Messenger):
         if id in prices and len(prices[id]) > 0:
             price_list = prices[id]
 
-            best_price = min(price_list, key=lambda price: price.price_new)
-            await messenger.send_price_found(arg_str, best_price.price_new)
+            # Save game info in database
+            db_session = Session()
 
             game_info = GameInfo()
             game_info.name = arg_str
@@ -76,8 +74,19 @@ async def track_game(arg_str: str, messenger: Messenger):
 
             db_session.add(game_info)
             db_session.commit()
+
+            best_price = min(price_list, key=lambda price: price.price_new)
+            await messenger.send_price_found(arg_str, best_price.price_new)
         else:
             await messenger.send_no_price_found(arg_str)
     else:
         # Notify user we couldn't find game
         await messenger.send_no_game_found(arg_str)
+
+
+@bot_command("list")
+async def list_tracked_games(arg_str: str, messenger: Messenger):
+    """Sends a list of the games we're tracking."""
+    db_session = Session()
+    game_names = map(lambda result: result.name, db_session.query(GameInfo.name))
+    await messenger.send_games_tracking_list(game_names)

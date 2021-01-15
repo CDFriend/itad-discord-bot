@@ -1,4 +1,5 @@
 from discord.abc import Messageable
+from typing import Iterable
 
 
 class Messenger:
@@ -20,6 +21,10 @@ class Messenger:
         await self._send_message(f"Nice, I found the game {title} on IsThereAnyDeal. "
                                  f"The best price I found is ${price}\n\n"
                                  "I'll start tracking this game.")
+
+    async def send_games_tracking_list(self, games: Iterable[str]):
+        games_list_formatted = "\n".join(games)
+        await self._send_message("Here are the games I'm tracking:\n\n" + games_list_formatted)
 
     async def _send_message(self, msg: str):
         await self._channel.send(msg)
